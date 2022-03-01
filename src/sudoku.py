@@ -17,4 +17,4 @@ class sudoku:
     #     - Perform any setup as necessary in this function.
     # def __init__(this):
     def __init__(this):
-        
+        pass
