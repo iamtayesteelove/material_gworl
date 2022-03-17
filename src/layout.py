@@ -120,7 +120,7 @@ class window(tk.Frame):
             self.game.board[self.selected_row][self.selected_col] = event.char
             self.__create_puzzle()
         elif event.keysym == 'BackSpace' or event.keysym == 'Delete':
-            self.game.board[self.selected_row][self.selected_col] = '0'
+            self.game.board[self.selected_row][self.selected_col] = ' '
             self.__create_puzzle()
 
     def __check_win(self):
