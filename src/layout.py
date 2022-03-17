@@ -11,6 +11,11 @@ import tkinter as tk
 #    def __init__(self, pop_quiz):
 
 class window(tk.Frame):
+    COLOR_BG = '#b8e1ff'
+    COLOR_WIN = '#e8aeb7'
+    COLOR_BUTTON = '#a9fff7'
+    COLOR_ACTIVE = '#94fbab'
+    
     ROWS = 9
     COLS = 9
     CELL_SIZE = 50
@@ -20,12 +25,17 @@ class window(tk.Frame):
         self.root = root
         self.root.geometry("600x600")
         self.root.title("It's Sudoku Boo!")
+        self.root.configure(bg='#aa1111')
 
         self.game = game
         self.selected_row = 0
         self.selected_col = 0
 
         tk.Frame.__init__(self, root)
+
+        # set background color of canvas
+        self.root.configure(bg=self.COLOR_BG)
+        self.configure(bg=self.COLOR_BG)
         
         # Create the UI with the Board
         self.place(relx=.5, rely=.5, anchor=tk.CENTER)
@@ -33,7 +43,12 @@ class window(tk.Frame):
         self.canvas = tk.Canvas(self, width=450, height=450)
         self.canvas.pack(fill=tk.BOTH)
 
-        self.win_button = tk.Button(self, pady=20, text='Wanna know if you won? Click me!', command=self.__check_win)
+        self.win_button = tk.Button(
+            self, pady=20, 
+            text='Wanna know if you won? Click me!', 
+            command=self.__check_win,
+            bg=self.COLOR_BUTTON, activebackground=self.COLOR_ACTIVE
+        )
         self.win_button.pack(pady=20)
 
         self.__create_grid()
@@ -66,11 +81,15 @@ class window(tk.Frame):
         self.canvas.delete('numbers')
         for row in range(9):
             for col in range(9):
+                original = self.game.protected[row][col]
                 num = self.game.board[row][col]
                 
                 if num != " ":
                     x, y = 25 + col * self.CELL_SIZE, 25 + row * self.CELL_SIZE
-                    self.canvas.create_text(x, y, text=num, tag='numbers', fill='black')
+                    if original:
+                        self.canvas.create_text(x, y, text=num, tag='numbers', fill='black', font=('Helvetica', '12', 'bold'))
+                    else:
+                        self.canvas.create_text(x, y, text=num, tag='numbers', fill='black', font=('Helvetica', '12'))
 
     # select a cell to enter the number
     # how do we show that? color the background?
@@ -91,7 +110,7 @@ class window(tk.Frame):
 
         # draw the polygon
         self.canvas.create_polygon(x, y, x+50, y, x+50, y+50, x, y+50, 
-                                   fill='#a0c2fa', tag='highlight')
+                                   fill=self.COLOR_BG, tag='highlight')
         self.__create_grid()
         self.__create_puzzle()
 
@@ -110,8 +129,9 @@ class window(tk.Frame):
             self.canvas.create_text(
                 225, 225, 
                 text='You are officially a\nMaterial Gworl!\n\nCongratulations!\nYou have won.',
-                font=('Helvetica','15','bold'),
-                justify=tk.CENTER
-            )
+                font=('Helvetica','15','bold'), justify=tk.CENTER
+            ) 
             self.canvas.unbind("<Button-1>")
             self.canvas.unbind("<Key>")
+        else:
+            pass

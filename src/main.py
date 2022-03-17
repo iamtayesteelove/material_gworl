@@ -3,7 +3,7 @@ from layout import window
 from tkinter import Tk
 
 game = sudoku()
-game.test_set_correct_and_check()
+# game.test_set_correct_and_check()
 game.print_board()
 
 root = Tk()
