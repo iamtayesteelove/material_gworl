@@ -116,12 +116,13 @@ class window(tk.Frame):
 
     def __key_pressed(self, event):
         print(event.char)
-        if event.char in "123456789" and self.game.protected[self.selected_row][self.selected_col] != True:
-            self.game.board[self.selected_row][self.selected_col] = event.char
-            self.__create_puzzle()
-        elif event.keysym == 'BackSpace' or event.keysym == 'Delete' and self.game.protected[self.selected_row][self.selected_col] != True:
-            self.game.board[self.selected_row][self.selected_col] = ' '
-            self.__create_puzzle()
+        if not self.game.protected[self.selected_row][self.selected_col]:
+            if event.char in "123456789":
+                self.game.board[self.selected_row][self.selected_col] = event.char
+                self.__create_puzzle()
+            elif event.keysym == 'BackSpace' or event.keysym == 'Delete':
+                self.game.board[self.selected_row][self.selected_col] = ' '
+                self.__create_puzzle()
 
     def __check_win(self):
         correct = self.game.check4correct()
