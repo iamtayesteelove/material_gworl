@@ -1,5 +1,11 @@
 from sudoku import sudoku
+from layout import window
+from tkinter import Tk
 
-var = sudoku()
+game = sudoku()
+game.test_set_correct_and_check()
+game.print_board()
 
-print(var.board)
+root = Tk()
+window(root, game)
+root.mainloop()
